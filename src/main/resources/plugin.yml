@@ -1,0 +1,15 @@
+name: VampireBats
+main: me.bukkit.critikull.VampireBats.VampireBats
+version: 1.0
+author: Critikull
+load: STARTUP
+description: New VampireBat monsters
+commands:
+    vampirebats:
+        description: VampireBats commands
+        usage: /<command>
+        aliases: [vamp]
+permissions:
+    critikull.vampirebats.reload:
+        description: Use the reload command
+        default: op
