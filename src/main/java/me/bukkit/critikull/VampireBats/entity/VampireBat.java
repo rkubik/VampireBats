@@ -157,7 +157,7 @@ public class VampireBat extends EntityBat {
 	            this.targetBlock = null;
 	        }
 	        if (targetPlayer != null) {
-	        	this.targetBlock = new BlockPosition(targetPlayer.locX, targetPlayer., targetPlayer.locZ);
+	        	this.targetBlock = new BlockPosition(targetPlayer.locX, targetPlayer.locY, targetPlayer.locZ);
 	        } else if ((this.targetBlock == null) || (this.random.nextInt(30) == 0) || (this.targetBlock.distanceSquared((int)this.locX, (int)this.locY, (int)this.locZ) < 4.0D)) {
 	            this.targetBlock = new BlockPosition((int)this.locX + this.random.nextInt(7) - this.random.nextInt(7), (int)this.locY + this.random.nextInt(6) - 2, (int)this.locZ + this.random.nextInt(7) - this.random.nextInt(7));
 	        }
