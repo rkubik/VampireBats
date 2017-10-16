@@ -8,6 +8,8 @@ vampire form cannot and will die immediately.
 
 No config required.
 
+**Note:** Only version 1.12 is supported. Pull requests welcome.
+
 ## Commands
 
 Spawn a vampire:
