@@ -6,19 +6,18 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import me.bukkit.critikull.VampireBats.VampireBats;
-import me.bukkit.critikull.VampireBats.entity.Vampire;
-import me.bukkit.critikull.VampireBats.entity.VampireBat;
+import me.bukkit.critikull.VampireBats.entity.EntityUtil;
 
 public class DamageListener implements Listener {
 	private VampireBats plugin;
-	
+
 	public DamageListener(VampireBats plugin) {
 		this.plugin = plugin;
 	}
 
 	@EventHandler
 	public void onVampireBatDeath(EntityDamageByEntityEvent e) {
-		if (e.getDamager() instanceof Player && (Vampire.isVampire(e.getEntity()) || VampireBat.isBat(e.getEntity()))) {
+		if (e.getDamager() instanceof Player && (EntityUtil.isVampire(e.getEntity()) || EntityUtil.isVampireBat(e.getEntity()))) {
 			this.plugin.log(e.getEntity(), "damaged by player: " + e.getDamage());
 		}
 	}

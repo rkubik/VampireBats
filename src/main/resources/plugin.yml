@@ -1,6 +1,6 @@
 name: VampireBats
 main: me.bukkit.critikull.VampireBats.VampireBats
-version: 1.0
+version: 1.1
 author: Critikull
 load: STARTUP
 description: New VampireBat monsters
@@ -12,4 +12,10 @@ commands:
 permissions:
     critikull.vampirebats.reload:
         description: Use the reload command
+        default: op
+    critikull.vampirebats.debug:
+        description: Use the debug command
+        default: op
+    critikull.vampirebats.spawn:
+        description: Use the spawn command
         default: op

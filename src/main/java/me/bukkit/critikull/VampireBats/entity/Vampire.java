@@ -1,12 +1,10 @@
 package me.bukkit.critikull.VampireBats.entity;
 
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftVillagerZombie;
-import org.bukkit.entity.ZombieVillager;
-
 import me.bukkit.critikull.VampireBats.entity.pathfinder.PathfinderGoalAvoidPlayerItem;
 import net.minecraft.server.v1_12_R1.DamageSource;
 import net.minecraft.server.v1_12_R1.DifficultyDamageScaler;
 import net.minecraft.server.v1_12_R1.EntityHuman;
+import net.minecraft.server.v1_12_R1.EntityLiving;
 import net.minecraft.server.v1_12_R1.EntitySkeleton;
 import net.minecraft.server.v1_12_R1.EntityVillager;
 import net.minecraft.server.v1_12_R1.EntityZombie;
@@ -16,6 +14,8 @@ import net.minecraft.server.v1_12_R1.GenericAttributes;
 import net.minecraft.server.v1_12_R1.GroupDataEntity;
 import net.minecraft.server.v1_12_R1.Items;
 import net.minecraft.server.v1_12_R1.MinecraftServer;
+import net.minecraft.server.v1_12_R1.MobEffect;
+import net.minecraft.server.v1_12_R1.MobEffects;
 import net.minecraft.server.v1_12_R1.PathfinderGoalFloat;
 import net.minecraft.server.v1_12_R1.PathfinderGoalHurtByTarget;
 import net.minecraft.server.v1_12_R1.PathfinderGoalLookAtPlayer;
@@ -54,13 +54,19 @@ public class Vampire extends EntityZombieVillager {
 	}
 
 	public void init() {
-		/* @todo Set pathfinding target to target from vampire bat (if available) */
+		if (this.bat != null) {
+			this.setGoalTarget(this.bat.getTargetPlayer());
+		}
 		this.transformTick = MinecraftServer.currentTick;
 		this.maxPlayerHits = TRANSFORM_HITS_MIN + this.random.nextInt(TRANSFORM_HITS_MAX - TRANSFORM_HITS_MIN + 1);
 		this.currentPlayerHits = 0;
 		this.motX = 0.0D;
 		this.motY = 0.0D;
 		this.motZ = 0.0D;
+	}
+
+	public EntityLiving getTargetPlayer() {
+		return this.getGoalTarget();
 	}
 
 	private void transform() {
@@ -73,15 +79,15 @@ public class Vampire extends EntityZombieVillager {
 		this.world.removeEntity(this);
 		this.dead = false;
 		this.world.addEntity(this.bat);
+		this.bat.addEffect(new MobEffect(MobEffects.CONFUSION, 200, 0));
 	}
 
 	@Override
 	public boolean damageEntity(DamageSource damagesource, float f) {
 		if (super.damageEntity(damagesource, f)) {
 			if (damagesource.getEntity() instanceof EntityHuman) {
-				if (((MinecraftServer.currentTick - this.transformTick) >= TRANSFORM_DELAY_TICKS) && 
-					(this.currentPlayerHits >= this.maxPlayerHits) &&
-					((getHealth() - f) > 0)) {
+				if (((MinecraftServer.currentTick - this.transformTick) >= TRANSFORM_DELAY_TICKS)
+						&& (this.currentPlayerHits >= this.maxPlayerHits) && ((getHealth() - f) > 0)) {
 					/* Transform into a Vampire Bat */
 					transform();
 				}
@@ -114,7 +120,8 @@ public class Vampire extends EntityZombieVillager {
 	@Override
 	protected void r() {
 		this.goalSelector.a(0, new PathfinderGoalFloat(this));
-		this.goalSelector.a(1, new PathfinderGoalAvoidPlayerItem(this, Items.POISONOUS_POTATO, "garlic", 6.0F, 1.0D, 1.2D));
+		this.goalSelector.a(1,
+				new PathfinderGoalAvoidPlayerItem(this, Items.POISONOUS_POTATO, "garlic", 6.0F, 1.0D, 1.2D));
 		this.goalSelector.a(2, new PathfinderGoalZombieAttack(this, 1.0D, false));
 		this.goalSelector.a(5, new PathfinderGoalMoveTowardsRestriction(this, 1.0D));
 		this.goalSelector.a(7, new PathfinderGoalRandomStrollLand(this, 1.0D));
@@ -126,7 +133,8 @@ public class Vampire extends EntityZombieVillager {
 	@Override
 	protected void do_() {
 		this.goalSelector.a(6, new PathfinderGoalMoveThroughVillage(this, 1.0D, false));
-		this.targetSelector.a(1, new PathfinderGoalHurtByTarget(this, true, new Class[] { EntityZombie.class, EntitySkeleton.class }));
+		this.targetSelector.a(1,
+				new PathfinderGoalHurtByTarget(this, true, new Class[] { EntityZombie.class, EntitySkeleton.class }));
 		this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityHuman.class, true));
 		this.targetSelector.a(3, new PathfinderGoalNearestAttackableTarget<>(this, EntityVillager.class, false));
 	}
@@ -134,27 +142,23 @@ public class Vampire extends EntityZombieVillager {
 	@Override
 	public GroupDataEntity prepare(DifficultyDamageScaler dds, GroupDataEntity gde) {
 		/* Don't call super, zombie prepare is... strange */
-	    return gde;
+		return gde;
 	}
 
 	@Override
 	protected void initAttributes() {
 		getAttributeMap().b(GenericAttributes.maxHealth);
 		getAttributeMap().b(GenericAttributes.FOLLOW_RANGE);
-	    getAttributeMap().b(GenericAttributes.c);
-	    getAttributeMap().b(GenericAttributes.MOVEMENT_SPEED);
-	    getAttributeMap().b(GenericAttributes.h);
-	    getAttributeMap().b(GenericAttributes.i);
-	    getAttributeMap().b(GenericAttributes.ATTACK_DAMAGE);
+		getAttributeMap().b(GenericAttributes.c);
+		getAttributeMap().b(GenericAttributes.MOVEMENT_SPEED);
+		getAttributeMap().b(GenericAttributes.h);
+		getAttributeMap().b(GenericAttributes.i);
+		getAttributeMap().b(GenericAttributes.ATTACK_DAMAGE);
 		getAttributeInstance(GenericAttributes.maxHealth).setValue(MAX_HEALTH);
 		getAttributeInstance(GenericAttributes.FOLLOW_RANGE).setValue(FOLLOW_RANGE /* radius */);
 		getAttributeInstance(GenericAttributes.MOVEMENT_SPEED).setValue(MOVEMENT_SPEED);
 		getAttributeInstance(GenericAttributes.ATTACK_DAMAGE).setValue(ATTACK_DAMAGE);
 		getAttributeInstance(GenericAttributes.h).setValue(2.0D /* height */);
 		getAttributeMap().b(a).setValue(0.0D /* disable reinforcements */);
-	}
-
-	public static boolean isVampire(org.bukkit.entity.Entity e) {
-		return (e instanceof ZombieVillager) && (((CraftVillagerZombie)e).getHandle() instanceof Vampire);
 	}
 }

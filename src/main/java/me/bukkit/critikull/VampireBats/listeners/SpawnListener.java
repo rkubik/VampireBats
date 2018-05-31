@@ -11,6 +11,7 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 
 import me.bukkit.critikull.VampireBats.VampireBats;
+import me.bukkit.critikull.VampireBats.entity.EntityUtil;
 import me.bukkit.critikull.VampireBats.entity.VampireBat;
 import net.minecraft.server.v1_12_R1.World;
 
@@ -23,7 +24,7 @@ public class SpawnListener implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onCreatureSpawn(CreatureSpawnEvent e) {
-		if (e.isCancelled() || e.getEntityType() != EntityType.BAT || e.getSpawnReason() == SpawnReason.CUSTOM || VampireBat.isBat(e.getEntity())) {
+		if (e.isCancelled() || e.getEntityType() != EntityType.BAT || e.getSpawnReason() == SpawnReason.CUSTOM || EntityUtil.isVampireBat(e.getEntity())) {
 			return;
 		}
 

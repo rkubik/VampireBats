@@ -6,27 +6,22 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import me.bukkit.critikull.CritikullSDK.v1.command.Argument;
-import me.bukkit.critikull.CritikullSDK.v1.command.Arguments;
-import me.bukkit.critikull.CritikullSDK.v1.command.ChoiceArgument;
-import me.bukkit.critikull.CritikullSDK.v1.command.IntegerOptionalArgument;
-import me.bukkit.critikull.CritikullSDK.v1.command.SubCommand;
 import me.bukkit.critikull.VampireBats.VampireBats;
 import me.bukkit.critikull.VampireBats.entity.CustomEntityType;
+import online.lethalsurvival.smc.command.Argument;
+import online.lethalsurvival.smc.command.Arguments;
+import online.lethalsurvival.smc.command.ChoiceArgument;
+import online.lethalsurvival.smc.command.IntegerOptionalArgument;
+import online.lethalsurvival.smc.command.SubCommand;
 
-public class SpawnCommand extends SubCommand {
+public final class SpawnCommand extends SubCommand {
 	private VampireBats plugin;
 
 	public SpawnCommand(VampireBats plugin) {
-		super(
-			"spawn", 
-			"Spawn a Vampire Bat", 
-			"critikull.vampirebats.spawn",
-			new Arguments(Arrays.asList(
-				(Argument) new ChoiceArgument("form", Arrays.asList("bat", "vampire")),
-				(Argument) new IntegerOptionalArgument("num")
-			))	
-		);
+		super("spawn", "Spawn a Vampire Bat", "critikull.vampirebats.spawn",
+				new Arguments(Arrays.asList(
+						(Argument) new ChoiceArgument("form", Arrays.asList("bat", "vampire")),
+						(Argument) new IntegerOptionalArgument("num"))));
 		this.plugin = plugin;
 	}
 

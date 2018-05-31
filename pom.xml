@@ -4,7 +4,7 @@
 
   <groupId>me.bukkit.critikull</groupId>
   <artifactId>VampireBats</artifactId>
-  <version>1.0.0</version>
+  <version>1.1.0</version>
   <packaging>jar</packaging>
 
   <name>VampireBats</name>
@@ -23,7 +23,7 @@
     </repository>
     <repository>
       <id>jenkins-repo</id>
-      <url>http://build.faze.io/plugin/repository/everything</url>
+      <url>https://build.faze.io/plugin/repository/everything</url>
     </repository>
   </repositories>
 
@@ -42,49 +42,38 @@
       <systemPath>${project.basedir}/deps/craftbukkit-1.12-R0.1-SNAPSHOT.jar</systemPath>
     </dependency>
     <dependency>
-      <groupId>me.bukkit.critikull</groupId>
-      <artifactId>CritikullSDK</artifactId>
-      <version>1.0.0</version>
+      <groupId>online.lethalsurvival.smc</groupId>
+      <artifactId>SimpleMC-SDK</artifactId>
+      <version>0.1</version>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
 
   <build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
         <version>3.1.0</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>shade</goal>
-						</goals>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
             <configuration>
-              <filters>
-                <filter>
-                  <artifact>*:*</artifact>
-                  <excludes>
-                    <exclude>META-INF/**</exclude>
-                    <exclude>com/**</exclude>
-                    <exclude>javax/**</exclude>
-                    <exclude>licenses/**</exclude>
-                    <exclude>org/**</exclude>
-                  </excludes>
-                </filter>
-              </filters>
               <transformers>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.DontIncludeResourceTransformer">
                   <resource>about.html</resource>
                 </transformer>
               </transformers>
             </configuration>
-					</execution>
-				</executions>
-				<configuration>
-					<finalName>${project.artifactId}-${project.version}</finalName>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+          </execution>
+        </executions>
+        <configuration>
+          <finalName>${project.artifactId}-${project.version}</finalName>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
