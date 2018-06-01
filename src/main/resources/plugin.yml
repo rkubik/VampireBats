@@ -3,6 +3,7 @@ main: me.bukkit.critikull.VampireBats.VampireBats
 version: 1.1
 author: Critikull
 load: STARTUP
+depend: [SimpleMC-SDK]
 description: New VampireBat monsters
 commands:
     vampirebats:

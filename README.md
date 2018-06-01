@@ -14,6 +14,14 @@ No config required.
 
 **Note:** Only version 1.12 is supported. Pull requests welcome.
 
+## Demo
+
+![Vampire Transform](demo.gif)
+
+## Dependencies
+
+1. [SimpleMC-SDK](https://github.com/rkubik/SimpleMC-SDK)
+
 ## Commands
 
 Spawn a vampire:
